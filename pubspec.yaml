@@ -1,0 +1,26 @@
+name: flutter_application_1
+description: "A new Flutter project."
+# Prevents the package from being accidentally published to pub.dev using `flutter pub publish`.
+publish_to: 'none' 
+
+# Defines the version and build number for your application.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.0 <4.0.0" # Adjusted to match Dart SDK version compatibility
+
+dependencies:
+  flutter:
+    sdk: flutter
+  qr_flutter:
+    git:
+      url: https://github.com/theyakka/qr.flutter.git   # Changed to version 4.0.0, compatible with Flutter 3.24.2
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
