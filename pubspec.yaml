@@ -17,6 +17,8 @@ dependencies:
       url: https://github.com/theyakka/qr.flutter.git   # Changed to version 4.0.0, compatible with Flutter 3.24.2
   cupertino_icons: ^1.0.8
 
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

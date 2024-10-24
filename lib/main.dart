@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -22,70 +23,85 @@ class DynamicFields extends StatefulWidget {
 class _DynamicFieldsState extends State<DynamicFields> {
   List<Widget> inputFields = [];
   List<TextEditingController> controllers = [];
-  int clickCount = 0;
-
-  // List of field names for dynamic fields
-  final List<String> fieldNames = [
-    'Name',
-    'Age',
-    'Phone Number',
-    'Email',
-    'Address',
-    'City',
-    'State',
-    'Country',
-    'Zip Code',
-    'Date of Birth',
-    'Occupation',
-    'Company Name',
-    'Job Title',
-    'Website',
-    'LinkedIn',
-    'Facebook',
-    'Twitter',
-    'Instagram',
-    'Notes',
-    'Other 1',
-    'Other 2'
-  ];
+  List<String> dynamicFieldNames = [];
 
   void _addField() {
-    setState(() {
-      if (clickCount < fieldNames.length) {
-        TextEditingController controller = TextEditingController();
-        controllers.add(controller);  // Store the controller for each field
+    // Show dialog to get the field name from the user
+    TextEditingController nameController = TextEditingController();
+    TextEditingController valueController = TextEditingController();
 
-        inputFields.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Row(
-              children: [
-                Expanded(flex: 1, child: Text(fieldNames[clickCount])),
-                Expanded(
-                  flex: 2,
-                  child: TextField(
-                    controller: controller,  // Set the controller to the text field
-                    decoration: InputDecoration(hintText: 'Enter ${fieldNames[clickCount]}'),
-                    keyboardType: (fieldNames[clickCount] == 'Age' || 
-                                   fieldNames[clickCount] == 'Zip Code') 
-                        ? TextInputType.number 
-                        : TextInputType.text,
-                  ),
-                ),
-              ],
-            ),
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Add Field'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(hintText: 'Enter Field Name'),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                controller: valueController,
+                decoration: InputDecoration(hintText: 'Enter Field Value'),
+              ),
+            ],
           ),
+          actions: [
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Add'),
+              onPressed: () {
+                if (nameController.text.isNotEmpty) {
+                  setState(() {
+                    TextEditingController fieldController = TextEditingController();
+                    controllers.add(fieldController);
+                    dynamicFieldNames.add(nameController.text);
+
+                    inputFields.add(
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text(nameController.text), // Field name
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                controller: fieldController,
+                                decoration: InputDecoration(hintText: 'Enter ${nameController.text}'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                    fieldController.text = valueController.text; // Set the field value
+                  });
+                  Navigator.of(context).pop(); // Close dialog
+                }
+              },
+            ),
+          ],
         );
-        clickCount++;
-      }
-    });
+      },
+    );
   }
 
   // Generate a string with all the input data
   String _getInputData() {
     String data = '';
     for (int i = 0; i < controllers.length; i++) {
-      data += '${fieldNames[i]}: ${controllers[i].text}\n';
+      data += '${dynamicFieldNames[i]}: ${controllers[i].text}\n';
     }
     return data;
   }
@@ -125,7 +141,7 @@ class _DynamicFieldsState extends State<DynamicFields> {
                           height: 200,
                           child: QrImageView(
                             data: data, // Pass the input data as a string
-                              version: QrVersions.auto,
+                            version: QrVersions.auto,
                             size: 200.0,
                           ),
                         ),
