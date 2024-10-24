@@ -72,7 +72,7 @@ class _DynamicFieldsState extends State<DynamicFields> {
                           children: [
                             Expanded(
                               flex: 1,
-                              child: Text(nameController.text), // Field name
+                              child: Text(nameController.text), 
                             ),
                             Expanded(
                               flex: 2,
@@ -85,9 +85,9 @@ class _DynamicFieldsState extends State<DynamicFields> {
                         ),
                       ),
                     );
-                    fieldController.text = valueController.text; // Set the field value
+                    fieldController.text = valueController.text; 
                   });
-                  Navigator.of(context).pop(); // Close dialog
+                  Navigator.of(context).pop(); 
                 }
               },
             ),
@@ -129,7 +129,7 @@ class _DynamicFieldsState extends State<DynamicFields> {
             ),
             ElevatedButton(
               onPressed: () {
-                final data = _getInputData(); // Get the input data
+                final data = _getInputData(); 
                 if (data.isNotEmpty) {
                   showDialog(
                     context: context,
@@ -140,7 +140,7 @@ class _DynamicFieldsState extends State<DynamicFields> {
                           width: 200,
                           height: 200,
                           child: QrImageView(
-                            data: data, // Pass the input data as a string
+                            data: data, 
                             version: QrVersions.auto,
                             size: 200.0,
                           ),
